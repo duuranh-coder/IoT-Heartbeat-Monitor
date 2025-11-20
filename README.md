@@ -64,7 +64,7 @@ Resumo:
 5. Opcional: use um cliente MQTT externo (por exemplo, MQTTX) para assinar e enviar comandos.
 
 Guia passo a passo detalhado:
-- wokwi/projeto-wokwi.txt
+- wokwi/README.md
 
 ---
 
