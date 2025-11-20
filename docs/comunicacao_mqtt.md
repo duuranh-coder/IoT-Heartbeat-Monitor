@@ -21,15 +21,19 @@ Este documento detalha como o projeto utiliza o protocolo **MQTT** sobre TCP/IP 
 - Função: publicar o valor analógico lido (ECG simulado)
 - Frequência: ~1 segundo
 - Payload: texto simples
-- Ex: *1532*
+- Ex:
+  ```cpp
+  1532;
 
 ### 2.2. Publicação: iot/monitor/alert
 
-Direção: ESP32 → broker
-Função: enviar alerta quando há anomalia prolongada
-Acionamento: valor fora de 500–2000 por alguns segundos
-Payload: texto
-Ex: *Alert: abnormal heart measurement detected*
+- Direção: ESP32 → broker
+- Função: enviar alerta quando há anomalia prolongada
+- Acionamento: valor fora de 500–2000 por alguns segundos
+- Payload: texto
+- Ex:
+  ```cpp
+  Alert: abnormal heart measurement detected;
 
 ### 2.3. Assinatura: iot/monitor/cmd
 - Direção: cliente MQTT → ESP32
