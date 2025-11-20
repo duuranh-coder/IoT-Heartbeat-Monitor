@@ -98,8 +98,8 @@ Descrição dos tópicos utilizados, payloads, comandos aceitos e fluxo MQTT:
 
 ## 👨‍💻 Autores
 
-- Alecsei da Costa  
-- Victor Duran  
+- Alecsei Ivanov da Costa  
+- Victor Céspedes Duran  
 
 Projeto desenvolvido para a disciplina Objetos Inteligentes Conectados – Universidade Presbiteriana Mackenzie.
 
