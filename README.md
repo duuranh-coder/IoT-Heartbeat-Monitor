@@ -32,8 +32,7 @@ Criar um protótipo IoT capaz de:
 └─ docs/
    ├─ arquitetura.md
    ├─ hardware.md
-   ├─ comunicacao_mqtt.md
-   └─ projeto-esp32-fisico.txt
+   └─ comunicacao_mqtt.md
 ```
 
 ---
@@ -60,29 +59,12 @@ Resumo:
 
 1. Acesse o Wokwi (https://wokwi.com).
 2. Importe os arquivos da pasta "wokwi" (diagram.json e libraries.txt).
-3. Cole o código de codigo-esp32/sketch.ino no editor do Wokwi.
+3. Cole o código de wokwi/sketch.ino no editor do Wokwi.
 4. Clique em "Play" para iniciar a simulação.
 5. Opcional: use um cliente MQTT externo (por exemplo, MQTTX) para assinar e enviar comandos.
 
 Guia passo a passo detalhado:
 - wokwi/projeto-wokwi.txt
-
----
-
-## ⚙️ Rodando em um ESP32 Físico
-
-Resumo:
-
-1. Abra o arquivo codigo-esp32/sketch.ino na Arduino IDE.
-2. Ajuste os dados da rede Wi-Fi:
-   - ssid = "NOME_DA_SUA_REDE"
-   - password = "SENHA_DA_SUA_REDE"
-3. Mantenha o broker MQTT como test.mosquitto.org, porta 1883.
-4. Faça o upload para o ESP32.
-5. Use um cliente MQTT (como MQTTX) para assinar os tópicos e enviar comandos.
-
-Guia detalhado:
-- docs/projeto-esp32-fisico.txt
 
 ---
 
