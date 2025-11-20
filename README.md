@@ -2,7 +2,7 @@
 
 Este repositório contém o protótipo de um sistema IoT para monitoramento remoto de sinais cardíacos, utilizando **ESP32**, **sensor de ECG (AD8232 ou potenciômetro no Wokwi)**, **LED** e **buzzer**, com comunicação pela internet via **Wi-Fi (TCP/IP)** e **protocolo MQTT**.
 
-O projeto foi desenvolvido como parte de um trabalho da disciplina de IoT, alinhado ao **ODS 3 – Saúde e Bem-estar**, com foco em monitoramento contínuo e geração de alertas locais e remotos.
+O projeto foi desenvolvido como parte de um trabalho da disciplina de OBJETOS INTELIGENTES CONECTADOS, alinhado ao **ODS 3 – Saúde e Bem-estar**, com foco em monitoramento contínuo e geração de alertas locais e remotos.
 
 ---
 
@@ -67,5 +67,5 @@ A descrição detalhada (incluindo funções e ligações) está em [`docs/hardw
 ### 4.2. Clonar o repositório
 
 ```bash
-git clone https://github.com/SEU_USUARIO/iot-monitoramento-pacientes.git
+git clone https://github.com/duuranh-coder/IoT-Heartbeat-Monitor.git
 cd iot-monitoramento-pacientes
