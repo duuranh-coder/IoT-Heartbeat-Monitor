@@ -1,71 +1,57 @@
-# IoT para Monitoramento Remoto de Pacientes
+# IoT Heartbeat Monitor (Scenario 2 – MQTT)
 
-Este repositório contém o protótipo de um sistema IoT para monitoramento remoto de sinais cardíacos, utilizando **ESP32**, **sensor de ECG (AD8232 ou potenciômetro no Wokwi)**, **LED** e **buzzer**, com comunicação pela internet via **Wi-Fi (TCP/IP)** e **protocolo MQTT**.
-
-O projeto foi desenvolvido como parte de um trabalho da disciplina de OBJETOS INTELIGENTES CONECTADOS, alinhado ao **ODS 3 – Saúde e Bem-estar**, com foco em monitoramento contínuo e geração de alertas locais e remotos.
-
----
+Este repositório contém o protótipo **IoT Heartbeat Monitor – Scenario 2 (MQTT)**, desenvolvido na disciplina **Objetos Inteligentes Conectados**.  
+O objetivo é monitorar um sinal de batimento cardíaco (ECG simulado), gerar **alertas locais** (LED + buzzer) e **alertas remotos** via **MQTT**, permitindo também **controle manual** dos atuadores por mensagens MQTT.
 
 ## 1. Visão geral do sistema
 
-O sistema:
+- Microcontrolador: **ESP32**
+- Entradas:
+  - Sinal de ECG simulado (via potenciômetro no Wokwi) no pino **ECG_PIN = 34**
+- Saídas:
+  - **LED** no pino **LED_PIN = 25**
+  - **Buzzer** no pino **BUZZER_PIN = 26**
+- Lógica básica:
+  - Lê o valor analógico do “ECG” e compara com limites:
+    - `LOW_THRESHOLD = 500`
+    - `HIGH_THRESHOLD = 2000`
+  - Se o sinal ficar fora da faixa:
+    - Acende o LED (modo automático, se não houver override manual).
+    - Se a anomalia persistir (≈ 2 segundos), liga o buzzer.
+    - Publica uma mensagem de **alerta** via MQTT.
+  - Em condições normais:
+    - LED e buzzer permanecem desligados (a menos que estejam em modo manual).
+  - Por MQTT é possível:
+    - Ligar/desligar LED e buzzer manualmente.
+    - Enviar um comando `RESET` para voltar ao modo automático.
 
-- Lê continuamente um sinal analógico de ECG (AD8232 ou um potenciômetro simulando o sensor).
-- Verifica se o sinal está dentro de uma faixa considerada normal.
-- Em caso de anomalia:
-  - Acende o **LED** (alerta visual).
-  - Após 2 segundos de persistência, aciona o **buzzer** (alerta sonoro).
-  - Publica uma mensagem de alerta em um tópico MQTT.
-- Publica periodicamente os valores do sinal no broker MQTT para monitoramento remoto.
-- Permite **controle manual** do LED e do buzzer via comandos MQTT (ex.: `RESET`, `LED_OFF`, `BUZZER_ON`).
-
----
-
-## 2. Arquitetura resumida
-
-- **Camada de dispositivo (edge)**: ESP32 + sensor de ECG (ou potenciômetro) + LED + buzzer.
-- **Conectividade**: Wi-Fi (TCP/IP) integrado ao ESP32.
-- **Protocolo de aplicação**: MQTT.
-- **Broker MQTT**: `test.mosquitto.org` (broker público da Eclipse Foundation).
-- **Cliente MQTT para testes**: MQTTX (ou similar).
-
-Os tópicos MQTT utilizados são:
-
-- `iot/monitor/ecg` → publicação dos valores do sinal (ECG).
-- `iot/monitor/alert` → publicação de alertas em caso de anomalia.
-- `iot/monitor/cmd` → recepção de comandos (ex.: `RESET`, `LED_OFF`, `LED_ON`, `BUZZER_ON`, `BUZZER_OFF`).
-
-Mais detalhes em [`docs/comunicacao_mqtt.md`](docs/comunicacao_mqtt.md).
+O projeto dialoga com o **ODS 3 – Saúde e Bem-estar**, ao simular um sistema de monitoramento remoto que poderia ser adaptado a contextos reais de acompanhamento de pacientes.
 
 ---
 
-## 3. Hardware utilizado
+## 2. Arquitetura em alto nível
 
-Resumo dos componentes:
+- **Camada de Dispositivo (Edge)**  
+  ESP32 + sensor/ECG simulado + LED + buzzer.
+- **Camada de Comunicação**  
+  Wi-Fi (TCP/IP) do ESP32 conectado a um **broker MQTT público**.
+- **Camada de Aplicação**  
+  Clientes MQTT (por exemplo, MQTTX) que:
+  - Recebem os valores de ECG.
+  - Recebem alertas.
+  - Enviam comandos de controle.
 
-- **ESP32 DevKit V1** – microcontrolador com Wi-Fi integrado.
-- **Sensor AD8232 de ECG** (ou potenciômetro no Wokwi para simulação).
-- **LED 5mm vermelho** – alerta visual.
-- **Buzzer ativo 5V** – alerta sonoro.
-- Protoboard, jumpers e fonte/USB.
+Mais detalhes estão em:
 
-A descrição detalhada (incluindo funções e ligações) está em [`docs/hardware.md`](docs/hardware.md).
+- [`docs/arquitetura.md`](docs/arquitetura.md)
+- [`docs/hardware.md`](docs/hardware.md)
+- [`docs/comunicacao_mqtt.md`](docs/comunicacao_mqtt.md)
 
 ---
 
-## 4. Como reproduzir o projeto
+## 3. Tópicos MQTT usados
 
-### 4.1. Pré-requisitos
+O sketch utiliza o broker público:
 
-- **IDE Arduino** instalada.
-- **Placa ESP32** configurada na IDE (Board Manager).
-- Biblioteca Wi-Fi e MQTT (ex.: `WiFi.h`, `PubSubClient.h`).
-- Acesso a uma rede **Wi-Fi**.
-- Cliente MQTT (ex.: **MQTTX**, MQTT Explorer ou outro).
-- Opcional: conta no **Wokwi** e arquivo de simulação deste repositório.
-
-### 4.2. Clonar o repositório
-
-```bash
-git clone https://github.com/duuranh-coder/IoT-Heartbeat-Monitor.git
-cd iot-monitoramento-pacientes
+```cpp
+const char* mqtt_server = "test.mosquitto.org";
