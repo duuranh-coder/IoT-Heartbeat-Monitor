@@ -1,1 +1,20 @@
-a
+# Projeto Wokwi – IoT Heartbeat Monitor (Scenario 2 – MQTT)
+
+## Arquivos:
+- diagram.json    → Diagrama do circuito no Wokwi
+- libraries.txt   → Bibliotecas utilizadas na simulação
+
+**Como reproduzir o projeto utilizando o Wokwi (simulação):**
+1. Acesse o Wokwi (https://wokwi.com).
+2. Crie um novo projeto com ESP32.
+3. Importe o arquivo diagram.json.
+4. Verifique se as bibliotecas listadas em libraries.txt estão instaladas.
+5. Cole o conteúdo de codigo-esp32/sketch.ino no editor de código do Wokwi.
+6. Clique em "Play" para executar a simulação.
+7. Abra o Serial Monitor:
+  - Você verá logs de conexão Wi-Fi, conexão ao broker MQTT e os valores de ECG.
+8. Para testar a variação do sinal:
+  - Ajuste o potenciômetro no diagrama do Wokwi.
+  - Observe:
+    + Mudança no valor de ECG no Serial.
+    + Acionamento de LED/buzzer quando o valor sai da faixa [500, 2000].
