@@ -23,7 +23,7 @@ Este documento detalha como o projeto utiliza o protocolo **MQTT** sobre TCP/IP 
 - Payload: texto simples
 - Ex:
   ```cpp
-  1532;
+  1532
 
 ### 2.2. Publicação: iot/monitor/alert
 
@@ -33,7 +33,7 @@ Este documento detalha como o projeto utiliza o protocolo **MQTT** sobre TCP/IP 
 - Payload: texto
 - Ex:
   ```cpp
-  Alert: abnormal heart measurement detected;
+  Alert: abnormal heart measurement detected
 
 ### 2.3. Assinatura: iot/monitor/cmd
 - Direção: cliente MQTT → ESP32
