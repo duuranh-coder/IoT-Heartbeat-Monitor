@@ -1,57 +1,129 @@
-# IoT Heartbeat Monitor (Scenario 2 – MQTT)
+# IoT Heartbeat Monitor – Scenario 2 (MQTT)
 
-Este repositório contém o protótipo **IoT Heartbeat Monitor – Scenario 2 (MQTT)**, desenvolvido na disciplina **Objetos Inteligentes Conectados**.  
-O objetivo é monitorar um sinal de batimento cardíaco (ECG simulado), gerar **alertas locais** (LED + buzzer) e **alertas remotos** via **MQTT**, permitindo também **controle manual** dos atuadores por mensagens MQTT.
+Este repositório contém o projeto "IoT Heartbeat Monitor – Scenario 2 (MQTT)", desenvolvido como parte da disciplina Objetos Inteligentes Conectados.
 
-## 1. Visão geral do sistema
-
-- Microcontrolador: **ESP32**
-- Entradas:
-  - Sinal de ECG simulado (via potenciômetro no Wokwi) no pino **ECG_PIN = 34**
-- Saídas:
-  - **LED** no pino **LED_PIN = 25**
-  - **Buzzer** no pino **BUZZER_PIN = 26**
-- Lógica básica:
-  - Lê o valor analógico do “ECG” e compara com limites:
-    - `LOW_THRESHOLD = 500`
-    - `HIGH_THRESHOLD = 2000`
-  - Se o sinal ficar fora da faixa:
-    - Acende o LED (modo automático, se não houver override manual).
-    - Se a anomalia persistir (≈ 2 segundos), liga o buzzer.
-    - Publica uma mensagem de **alerta** via MQTT.
-  - Em condições normais:
-    - LED e buzzer permanecem desligados (a menos que estejam em modo manual).
-  - Por MQTT é possível:
-    - Ligar/desligar LED e buzzer manualmente.
-    - Enviar um comando `RESET` para voltar ao modo automático.
-
-O projeto dialoga com o **ODS 3 – Saúde e Bem-estar**, ao simular um sistema de monitoramento remoto que poderia ser adaptado a contextos reais de acompanhamento de pacientes.
+O sistema monitora um sinal de ECG simulado, identifica anomalias e envia alertas via MQTT, permitindo também controle remoto de atuadores (LED e buzzer).
 
 ---
 
-## 2. Arquitetura em alto nível
+## 🎯 Objetivo do Projeto
 
-- **Camada de Dispositivo (Edge)**  
-  ESP32 + sensor/ECG simulado + LED + buzzer.
-- **Camada de Comunicação**  
-  Wi-Fi (TCP/IP) do ESP32 conectado a um **broker MQTT público**.
-- **Camada de Aplicação**  
-  Clientes MQTT (por exemplo, MQTTX) que:
-  - Recebem os valores de ECG.
-  - Recebem alertas.
-  - Enviam comandos de controle.
+Criar um protótipo IoT capaz de:
 
-Mais detalhes estão em:
-
-- [`docs/arquitetura.md`](docs/arquitetura.md)
-- [`docs/hardware.md`](docs/hardware.md)
-- [`docs/comunicacao_mqtt.md`](docs/comunicacao_mqtt.md)
+- Ler continuamente um sinal cardíaco (simulado com potenciômetro no Wokwi).
+- Detectar anomalias com base em limites pré-definidos.
+- Gerar alertas locais (LED e buzzer).
+- Publicar dados e alertas via MQTT.
+- Receber comandos remotos (LED_ON, BUZZER_OFF, RESET, etc.).
+- Demonstrar uma arquitetura IoT completa: sensor → ESP32 → Wi-Fi → MQTT → cliente remoto.
 
 ---
 
-## 3. Tópicos MQTT usados
+## 📂 Estrutura do Repositório
 
-O sketch utiliza o broker público:
+```
+.
+├─ README.md
+├─ codigo-esp32/
+│  └─ sketch.ino
+├─ wokwi/
+│  ├─ diagram.json
+│  ├─ libraries.txt
+│  └─ projeto-wokwi.txt
+└─ docs/
+   ├─ arquitetura.md
+   ├─ hardware.md
+   ├─ comunicacao_mqtt.md
+   └─ projeto-esp32-fisico.txt
+```
 
-```cpp
-const char* mqtt_server = "test.mosquitto.org";
+---
+
+## 🌐 Comunicação via Internet / MQTT
+
+O projeto utiliza:
+
+- Wi-Fi para comunicação TCP/IP.
+- Broker MQTT público: test.mosquitto.org
+- Tópicos:
+  - Publicação dos valores de ECG: iot/monitor/ecg
+  - Publicação de alertas: iot/monitor/alert
+  - Recebimento de comandos: iot/monitor/cmd
+
+Documentação completa da comunicação está em:
+- docs/comunicacao_mqtt.md
+
+---
+
+## 🖥️ Rodando no Wokwi (Simulação)
+
+Resumo:
+
+1. Acesse o Wokwi (https://wokwi.com).
+2. Importe os arquivos da pasta "wokwi" (diagram.json e libraries.txt).
+3. Cole o código de codigo-esp32/sketch.ino no editor do Wokwi.
+4. Clique em "Play" para iniciar a simulação.
+5. Opcional: use um cliente MQTT externo (por exemplo, MQTTX) para assinar e enviar comandos.
+
+Guia passo a passo detalhado:
+- wokwi/projeto-wokwi.txt
+
+---
+
+## ⚙️ Rodando em um ESP32 Físico
+
+Resumo:
+
+1. Abra o arquivo codigo-esp32/sketch.ino na Arduino IDE.
+2. Ajuste os dados da rede Wi-Fi:
+   - ssid = "NOME_DA_SUA_REDE"
+   - password = "SENHA_DA_SUA_REDE"
+3. Mantenha o broker MQTT como test.mosquitto.org, porta 1883.
+4. Faça o upload para o ESP32.
+5. Use um cliente MQTT (como MQTTX) para assinar os tópicos e enviar comandos.
+
+Guia detalhado:
+- docs/projeto-esp32-fisico.txt
+
+---
+
+## 🔌 Hardware Utilizado
+
+Principais componentes:
+
+- ESP32 DevKit V1.
+- Potenciômetro simulando o sinal de ECG (no Wokwi).
+- LED de indicação (GPIO 25).
+- Buzzer de alerta (GPIO 26).
+
+Detalhes de ligações, pinos e alimentação:
+- docs/hardware.md
+
+---
+
+## 🧱 Arquitetura do Sistema
+
+Descrição da arquitetura em camadas, fluxo de funcionamento e lógica principal do sistema:
+- docs/arquitetura.md
+
+---
+
+## 📡 Tópicos MQTT e Protocolo
+
+Descrição dos tópicos utilizados, payloads, comandos aceitos e fluxo MQTT:
+- docs/comunicacao_mqtt.md
+
+---
+
+## 👨‍💻 Autores
+
+- Alecsei da Costa  
+- Victor Duran  
+
+Projeto desenvolvido para a disciplina Objetos Inteligentes Conectados – UFABC.
+
+---
+
+## 📘 Licença
+
+Uso acadêmico.
