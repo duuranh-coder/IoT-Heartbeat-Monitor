@@ -24,12 +24,11 @@ Criar um protótipo IoT capaz de:
 ```
 .
 ├─ README.md
-├─ codigo-esp32/
-│  └─ sketch.ino
 ├─ wokwi/
 │  ├─ diagram.json
 │  ├─ libraries.txt
-│  └─ projeto-wokwi.txt
+|  ├─ sketch.ino
+│  └─ README.md
 └─ docs/
    ├─ arquitetura.md
    ├─ hardware.md
