@@ -120,7 +120,7 @@ Descrição dos tópicos utilizados, payloads, comandos aceitos e fluxo MQTT:
 - Alecsei da Costa  
 - Victor Duran  
 
-Projeto desenvolvido para a disciplina Objetos Inteligentes Conectados – UFABC.
+Projeto desenvolvido para a disciplina Objetos Inteligentes Conectados – Mackenzie.
 
 ---
 
